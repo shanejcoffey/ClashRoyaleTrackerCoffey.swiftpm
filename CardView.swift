@@ -7,12 +7,25 @@
 
 import SwiftUI
 
-struct SwiftUIView: View {
+struct CardView: View {
+    
+    @State var card: Card?
+    @State var height: CGFloat
+    @State var width: CGFloat
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .frame(width: width, height: height)
+                .foregroundStyle(.indigo)
+            Image(card?.image ?? "")
+                .resizable()
+                .frame(width: width, height: height)
+            Text(card?.name ?? "")
+        }
     }
 }
 
 #Preview {
-    SwiftUIView()
+    CardView(card: Card(name: "Knight", elixir: 3, type: "troop", rarity: 0, image: "MusketeerImage"), height: 125, width: 100)
 }
