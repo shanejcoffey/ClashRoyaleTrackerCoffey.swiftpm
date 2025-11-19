@@ -15,9 +15,9 @@
 
 import SwiftUI
 
-struct DeckView: View {
+struct SmallDeckView: View {
 
-    @ObservedObject var deck: Deck
+    var deck: Deck
     let height: Int
     let width: Int
     let columns: [GridItem] = [

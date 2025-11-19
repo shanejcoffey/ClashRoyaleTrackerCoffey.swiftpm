@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct SwiftUIView: View {
+struct DecksView: View {
     
-    @State var decks: [Deck]
+    @Binding var decks: [Deck]
     
     let columns: [GridItem] = [
         GridItem(.flexible()),
@@ -18,9 +18,9 @@ struct SwiftUIView: View {
     
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: columns, spacing: 12) {
-                ForEach($decks) { deck in
-                    DeckView(deck: deck, height: Int(UIScreen.main.bounds.width * 0.8) / 2, width: 200)
+            LazyVGrid(columns: columns) {
+                ForEach(decks) { deck in
+                    SmallDeckView(deck: deck, height:  Int(UIScreen.main.bounds.width * 0.9 * 0.625) / 2, width: Int(UIScreen.main.bounds.width * 0.9) / 2)
                         .padding()
                 }
             }

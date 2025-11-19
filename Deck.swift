@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-class Deck {
-    @State var cards: [Card?]
+class Deck: Identifiable, ObservableObject {
+    @Published var cards: [Card?]
     
     init(cards: [Card?]) {
         self.cards = cards
@@ -20,7 +20,9 @@ class Deck {
     
     func setCard (card: Card?, index: Int) -> Card? {
         let replacedCard: Card? = cards[index]
-        cards[index] = card
+        var newCards = cards
+        newCards[index] = card
+        cards = newCards
         return replacedCard
     }
 }

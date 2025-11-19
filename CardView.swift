@@ -15,13 +15,9 @@ struct CardView: View {
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .frame(width: width, height: height)
-                .foregroundStyle(.indigo)
             Image(card?.image ?? "")
                 .resizable()
-                .frame(width: width, height: height)
-            Text(card?.name ?? "")
+                .frame(width: width * 0.9, height: height * 0.9)
         }
     }
 }

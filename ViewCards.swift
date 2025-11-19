@@ -8,11 +8,29 @@
 import SwiftUI
 
 struct ViewCards: View {
+    
+    let columns: [GridItem] = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
+    @State var width: CGFloat
+    
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView {
+            LazyVGrid(columns: columns, spacing: 10) {
+                ForEach(allCards) { card in
+                    CardView(card: card, height: CGFloat(width * 1.2388 / 4), width: CGFloat(width / 4))
+                }
+            }
+            .padding()
+        }
     }
 }
 
 #Preview {
-    SwiftUIView_2()
+    ViewCards(width: UIScreen.main.bounds.width)
 }
