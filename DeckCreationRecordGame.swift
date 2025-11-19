@@ -2,7 +2,7 @@
 //  SwiftUIView.swift
 //  ClashRoyaleTrackerCoffey
 //
-//  Created by SHANE COFFEY on 11/14/25.
+//  Created by SHANE COFFEY on 11/18/25.
 //
 
 import SwiftUI
