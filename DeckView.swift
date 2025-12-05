@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DeckView: View {
 
-    @ObservedObject var deck: Deck
+    @State var deck: Deck
     let height: Int
     let width: Int
     let columns: [GridItem] = [
@@ -36,7 +37,8 @@ struct DeckView: View {
             
             LazyVGrid(columns: columns, spacing : CGFloat(width) * 0.2 / 4) {
                 ForEach(deck.cards.indices, id:\.self) { i in
-                    if let card = deck.cards[i] {
+                    let card = deck.cards[i]
+                    if card.name != "" {
                         ZStack {
                             RoundedRectangle(cornerRadius: cardWidth / 10)
                                 .frame(width: cardWidth, height: cardHeight)
@@ -54,6 +56,7 @@ struct DeckView: View {
                 }
             }
         }
+        .background(Color(red: 119/255.0, green: 184/255.0, blue: 224/255.0))
         .frame(width: CGFloat(width), height: CGFloat(height))
     }
 }
