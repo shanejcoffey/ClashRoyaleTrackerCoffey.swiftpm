@@ -6,43 +6,61 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Card: Identifiable, Hashable {
-    var id: String { name }
-    let name: String
-    let elixir: Int
-    let type: String
-    let rarity: Int
-    let image: String
-    
-    init(name: String, elixir: Int, type: String, rarity: Int, image: String) {
+@Model
+class Card: Identifiable, Hashable, Codable {
+    @Attribute(.unique) var id: String
+    var name: String
+    var elixir: Int
+    var type: String
+    var rarity: Int
+    var image: String
+
+    init(name: String, elixir: Int, type: String, rarity: Int, image: String = "") {
+        self.id = name
         self.name = name
         self.elixir = elixir
         self.type = type
         self.rarity = rarity
         self.image = image
     }
-    
-    init(name: String, elixir: Int, type: String, rarity: Int) {
-        self.name = name
-        self.elixir = elixir
-        self.type = type
-        self.rarity = rarity
+
+    init() {
+        self.id = UUID().uuidString
+        self.name = ""
+        self.elixir = 0
+        self.type = ""
+        self.rarity = 0
         self.image = ""
     }
-}
+    
+    // MARK: Codable
+    enum CodingKeys: String, CodingKey {
+        case id, name, elixir, type, rarity, image
+    }
 
-let allCards: [Card] = [
-    Card(name: "Knight", elixir: 3, type: "Troop", rarity: 0, image: "KnightImage"),
-    Card(name: "Archers", elixir: 3, type: "Troop", rarity: 0, image: "ArchersImage"),
-    Card(name: "Bomber", elixir: 2, type: "Troop", rarity: 0, image: "BomberImage"),
-    Card(name: "Arrows", elixir: 3, type: "Spell", rarity: 0, image: "ArrowsImage"),
-    Card(name: "Giant", elixir: 5, type: "Troop", rarity: 1, image: "GiantImage"),
-    Card(name: "Musketeer", elixir: 4, type: "Troop", rarity: 1, image: "MusketeerImage"),
-    Card(name: "Mini P.E.K.K.A", elixir: 4, type: "Troop", rarity: 1, image: "MiniPEKKAImage"),
-    Card(name: "Fireball", elixir: 4, type: "Spell", rarity: 1, image: "FireballImage"),
-    Card(name: "Witch", elixir: 5, type: "Troop", rarity: 2, image: "WitchImage"),
-    Card(name: "Skeleton Army", elixir: 3, type: "Troop", rarity: 2, image: "SkeletonArmyImage"),
-    Card(name: "Baby Dragon", elixir: 4, type: "Troop", rarity: 2, image: "BabyDragonImage"),
-    Card(name: "Prince", elixir: 5, type: "Troop", rarity: 2, image: "PrinceImage")
-]
+    required convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let name = try container.decode(String.self, forKey: .name)
+        let elixir = try container.decode(Int.self, forKey: .elixir)
+        let type = try container.decode(String.self, forKey: .type)
+        let rarity = try container.decode(Int.self, forKey: .rarity)
+        let image = try container.decode(String.self, forKey: .image)
+        self.init(name: name, elixir: elixir, type: type, rarity: rarity, image: image)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
+        try container.encode(elixir, forKey: .elixir)
+        try container.encode(type, forKey: .type)
+        try container.encode(rarity, forKey: .rarity)
+        try container.encode(image, forKey: .image)
+    }
+
+    // MARK: Hashable
+    static func == (lhs: Card, rhs: Card) -> Bool { lhs.name == rhs.name }
+    func hash(into hasher: inout Hasher) { hasher.combine(name) }
+}
