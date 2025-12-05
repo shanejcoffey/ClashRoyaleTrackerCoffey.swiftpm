@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DeckCreationRecordGame: View {
-    @ObservedObject var deck: Deck
+    
+    @State var allCards: [Card] = []
+    @Binding var deck: Deck
     
     
     @State private var selectedCard: Card? = nil
@@ -17,7 +20,7 @@ struct DeckCreationRecordGame: View {
     
     var unusedCards: [Card] {
         allCards.filter { card in
-            !deck.cards.contains { $0?.id == card.id }
+            !deck.cards.contains { $0.id == card.id }
         }
     }
     
@@ -78,5 +81,6 @@ struct DeckCreationRecordGame: View {
             }
 
         }
+        .background(Color(red: 119/255.0, green: 184/255.0, blue: 224/255.0))
     }
 }
