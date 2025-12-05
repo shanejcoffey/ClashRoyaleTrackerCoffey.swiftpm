@@ -1,7 +1,7 @@
 //
 //  SwiftUIView.swift
 //  ClashRoyaleTrackerCoffey
-//
+// 
 //  Created by SHANE COFFEY on 11/6/25.
 //
 
