@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DecksView: View {
     
@@ -25,5 +26,6 @@ struct DecksView: View {
                 }
             }
         }
+        .background(Color(red: 119/255.0, green: 184/255.0, blue: 224/255.0))
     }
 }
