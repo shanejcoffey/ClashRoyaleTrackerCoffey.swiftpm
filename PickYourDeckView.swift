@@ -6,28 +6,25 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct PickYourDeckView: View {
-    
-    @ObservedObject var deck: Deck
-    @Binding var decks: [Deck]
-    
-    let columns: [GridItem] = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-    ]
-    
+    @State var decks: [Deck]
+    @Binding var deckSelected: Deck
+
+    let columns: [GridItem] = [.init(.flexible()), .init(.flexible())]
+
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns) {
                 ForEach(decks) { deck in
                     SmallDeckView(deck: deck, height:  Int(UIScreen.main.bounds.width * 0.9 * 0.625) / 2, width: Int(UIScreen.main.bounds.width * 0.9) / 2)
-                        .padding()
                         .onTapGesture {
-                            self.deck.cards = deck.cards
+                            deckSelected.cards = deck.cards
                         }
                 }
             }
         }
+        .background(Color(red: 119/255.0, green: 184/255.0, blue: 224/255.0))
     }
 }
