@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DeckCreationView: View {
     
-    @Binding var decks: [Deck]
-    @ObservedObject var deck: Deck
     
+    @State var allCards: [Card]
+    @State var deck: Deck
+    @Query var battles: [Battle]
+    @Binding var decks: [Deck]
+    @State var showCreatedAlert: Bool = false
+    @State var fillDeckAlert: Bool = false
     
     @State private var selectedCard: Card? = nil
     
@@ -19,7 +24,7 @@ struct DeckCreationView: View {
     
     var unusedCards: [Card] {
         allCards.filter { card in
-            !deck.cards.contains { $0?.id == card.id }
+            !deck.cards.contains { $0.id == card.id }
         }
     }
     
@@ -50,8 +55,9 @@ struct DeckCreationView: View {
                                     .contentShape(Rectangle())
                                     .onTapGesture {
                                         if let card = selectedCard {
-                                            deck.cards[index] = card
-                                            selectedCard = nil
+                                            var newCards = deck.cards
+                                            newCards[index] = card
+                                            deck.cards = newCards
                                         }
                                     }
                                 }
@@ -71,7 +77,6 @@ struct DeckCreationView: View {
                                     .stroke(selectedCard?.id == card.id ? Color.blue : Color.clear, lineWidth: 3)
                             )
                             .onTapGesture {
-                                print("selected \(card.name)")
                                 selectedCard = card
                             }
                     }
@@ -80,8 +85,16 @@ struct DeckCreationView: View {
             }
             
             Button {
-                decks.append(Deck(cards: deck.cards))
-                deck.cards = [nil, nil, nil, nil, nil, nil, nil, nil]
+                if !deck.isFull()  {
+                    fillDeckAlert = true
+                } else {
+                    var deckToSave: Deck = Deck(cards: deck.cards)
+                    decks.append(deckToSave)
+                    showCreatedAlert = true;
+                    for i in deck.cards.indices {
+                        deck.cards[i] = Card()
+                    }
+                }
             } label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 20)
@@ -92,6 +105,13 @@ struct DeckCreationView: View {
                 }
             }
 
+        }
+        .background(Color(red: 119/255.0, green: 184/255.0, blue: 224/255.0))
+        .alert("Deck created", isPresented: $showCreatedAlert) {
+            
+        }
+        .alert("Please fill the deck", isPresented: $fillDeckAlert) {
+            
         }
     }
 }
